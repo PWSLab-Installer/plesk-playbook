@@ -1,0 +1,24 @@
+- hosts: localhost
+  connection: local
+  vars:
+    
+
+
+  tasks:
+        
+    - name: Install Role Plesk
+      get_url:
+        url: https://autoinstall.plesk.com/one-click-installer
+        dest: /tmp/one-click-installer
+
+    - name: Execute Plesk
+      shell: bash /tmp/one-click-installer > /var/log/plesk.log 2>&1
+    
+    
+    - name: Saving the plesk entry
+      command: tail -n 27 /var/log/plesk.log
+      register: plesk_script
+    
+    - name: stdout of plesk_script
+      debug: msg={{ plesk_script.stdout }}
+      when: plesk_script is defined 
